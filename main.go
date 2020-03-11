@@ -55,7 +55,11 @@ func main() {
 	client := github.NewClient(tc)
 
 	message := "Hello World"
-	comment := github.PullRequestComment{Body: &message}
-	client.PullRequests.CreateComment(ctx, pr.Owner.Login, pr.Repository.Name, pr.Number, &comment)
-
+	comment := &github.IssueComment{
+		Body: &message,
+	}
+	_, _, err = client.Issues.CreateComment(ctx, pr.Owner.Login, pr.Repository.Name, pr.Number, comment)
+	if err != nil {
+		log.Printf(err.Error())
+	}
 }
