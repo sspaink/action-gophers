@@ -2,6 +2,9 @@ FROM golang:1.14 as build
 
 COPY . .
 
+# Enable Go modules
+ENV GO111MODULE=on
+
 # -s -w strips debugging information
 RUN go build -ldflags="-s -w" -o /bin/action
 
