@@ -54,7 +54,10 @@ func main() {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	message := "Hello World"
+	// TODO make and add more Gopher gifs!
+	url := "https://media.giphy.com/media/S6q921h64g8Qi305AJ/giphy.gif"
+
+	message := "![GopherGif](" + url + ")"
 	comment := &github.IssueComment{
 		Body: &message,
 	}
