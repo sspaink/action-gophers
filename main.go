@@ -13,20 +13,25 @@ import (
 	"github.com/sethvargo/go-githubactions"
 )
 
+// PullRequestEvent is the root of the event payload related to a pull request
+// More details: https://developer.github.com/v3/activity/events/types/#pullrequestevent
 type PullRequestEvent struct {
 	PullRequest `json:"pull_request"`
 	Repository  `json:"repository"`
 }
 
+// PullRequest contains the information describing the pr
 type PullRequest struct {
 	Number int
 }
 
+// Repository contains the information describing the repo the pr is beind made to
 type Repository struct {
 	Name  string
 	Owner `json:"owner"`
 }
 
+// Owner contains the information about the org or individual who created the repo
 type Owner struct {
 	Login string
 }
@@ -36,11 +41,13 @@ func main() {
 	githubToken := githubactions.GetInput("GITHUB_TOKEN")
 	if githubToken == "" {
 		githubactions.Fatalf("missing input 'githubToken'")
+		return
 	}
 
 	event, err := ioutil.ReadFile(os.Getenv("GITHUB_EVENT_PATH"))
 	if err != nil {
 		log.Printf("Can't read events: " + err.Error())
+		return
 	}
 
 	var pr PullRequestEvent
@@ -64,5 +71,6 @@ func main() {
 	_, _, err = client.Issues.CreateComment(ctx, pr.Owner.Login, pr.Repository.Name, pr.Number, comment)
 	if err != nil {
 		log.Printf(err.Error())
+		return
 	}
 }
