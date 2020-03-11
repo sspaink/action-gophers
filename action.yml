@@ -1,0 +1,10 @@
+name: Action Gophers
+description: 'Posts a gopher gif on every PR as a reward for pushing code.'
+inputs:
+  secrets:
+    fruit: Name of fruit to mask
+    required: true
+
+runs:
+  using: docker
+  image: Dockerfile
